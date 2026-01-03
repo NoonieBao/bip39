@@ -260,6 +260,9 @@
                                 </label>
                             </div>
                         </div>
+
+
+
                         <div class="form-group">
                             <label for="passphrase" class="col-sm-2 control-label">BIP39 Passphrase (optional)</label>
                             <div class="col-sm-10">
@@ -267,11 +270,69 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <label for="passphraseSuf" class="col-sm-2 control-label">Passphrase Suffix</label>
+                            <div class="col-sm-10">
+                                <textarea id="passphraseSuf" class="form-control" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></textarea>
+                            </div>
+                        </div>
+                        <button class="btn" id="calMd5" ><b>md5</b></button>
+                        <button class="btn" id="addSuffix"><b>addToPassphrase</b></button>
+                        <div id="md5"></div>
+                        <script>
+                            // calMd5 的作用 获取passphraseSuf中的内容, 计算md5, aaa = aaa.replace(" ","").replace(",","").lower(), 显示在div#md5上
+                            //  addSuffix的作用, 把aaa作为后缀加入到passphrase末尾
+                        </script>
+
+                        <!-- blueimp-md5 -->
+<script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.19.0/js/md5.min.js"></script>
+
+<script>
+  // calMd5 的作用 获取passphraseSuf中的内容, 计算md5,
+  // aaa = aaa.replace(" ","").replace(",","").lower(), 显示在div#md5上
+  // addSuffix的作用, 把aaa作为后缀加入到passphrase末尾
+
+  (function () {
+    const passphrase = document.getElementById("passphrase");
+    const passphraseSuf = document.getElementById("passphraseSuf");
+    const calMd5 = document.getElementById("calMd5");
+    const addSuffix = document.getElementById("addSuffix");
+    const md5Div = document.getElementById("md5");
+
+    function normalizeSuffix(s) {
+      // 按你的描述：replace(" ","").replace(",","").lower()
+      // 我这里做成全局：去掉所有空格和逗号，再小写
+      return (s || "").replace(/[ ,]/g, "").toLowerCase();
+    }
+
+    calMd5.addEventListener("click", function (e) {
+      e.preventDefault();
+
+      const aaa = normalizeSuffix(passphraseSuf.value);
+      const hash = md5(aaa); // blueimp-md5 全局函数
+
+      md5Div.textContent = "md5(注意你需要手动触发重新计算)"+hash;
+    });
+
+    addSuffix.addEventListener("click", function (e) {
+      e.preventDefault();
+
+      const aaa = normalizeSuffix(passphraseSuf.value);
+      if (!aaa) return;
+
+      passphrase.value = (passphrase.value || "") + aaa;
+    });
+  })();
+</script>
+
+
+
+                        <div class="form-group">
                             <label for="seed" class="col-sm-2 control-label">BIP39 Seed</label>
                             <div class="col-sm-10">
                                 <textarea id="seed" class="seed private-data form-control" data-show-qr autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></textarea>
                             </div>
                         </div>
+                        
                         <div class="form-group">
                             <label for="network-phrase" class="col-sm-2 control-label">Coin</label>
                             <div class="col-sm-10">
