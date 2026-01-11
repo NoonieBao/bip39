@@ -235,12 +235,47 @@
                                 <a href="#PBKDF2-notes">Read more</a>
                             </div>
                         </div>
+<script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.19.0/js/md5.min.js"></script>
+
                         <div class="form-group">
                             <label for="phrase" class="col-sm-2 control-label">BIP39 Mnemonic</label>
                             <div class="col-sm-10">
                                 <textarea id="phrase" class="phrase private-data form-control" data-show-qr autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></textarea>
                             </div>
                         </div>
+
+                        <button class="btn" id="calMd539" ><b>md5</b></button>
+                        <div id="md539"></div>
+
+<script>
+  // calMd5 的作用 获取passphraseSuf中的内容, 计算md5,
+  // aaa = aaa.replace(" ","").replace(",","").lower(), 显示在div#md5上
+  // addSuffix的作用, 把aaa作为后缀加入到passphrase末尾
+
+  (function () {
+    const passphraseSuf = document.getElementById("phrase");
+    const calMd5 = document.getElementById("calMd539");
+    const md5Div = document.getElementById("md539");
+
+    function normalizeSuffix(s) {
+      // 按你的描述：replace(" ","").replace(",","").lower()
+      // 我这里做成全局：去掉所有空格和逗号，再小写
+      return (s || "").replace(/[ ,]/g, "").toLowerCase();
+    }
+
+    calMd5.addEventListener("click", function (e) {
+      e.preventDefault();
+
+      const aaa = normalizeSuffix(passphraseSuf.value);
+      const hash = md5(aaa); // blueimp-md5 全局函数
+
+      md5Div.textContent = "md5"+hash;
+    });
+
+
+  })();
+</script>
+
                         <div class="form-group">
                             <div  class="splitMnemonic hidden">
                                 <label for="phrase" class="col-sm-2 control-label">BIP39 Split Mnemonic</label>
@@ -284,7 +319,6 @@
                         </script>
 
                         <!-- blueimp-md5 -->
-<script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.19.0/js/md5.min.js"></script>
 
 <script>
   // calMd5 的作用 获取passphraseSuf中的内容, 计算md5,
